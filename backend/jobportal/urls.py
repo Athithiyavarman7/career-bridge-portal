@@ -17,12 +17,15 @@ router.register(r'applications', ApplicationViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("profile/",profile),
-    path("register/",register),
+    path("profile/", profile),
+    path("register/", register),
     path("login/", login),
-
     path("refresh/", TokenRefreshView.as_view(), name="token_refresh"),
-
-
     path('', include(router.urls)),
 ]
+
+from django.conf import settings
+from django.conf.urls.static import static
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

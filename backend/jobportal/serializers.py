@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, Company, Jobs, Application
+from .models import User, Company, Jobs, Application, Profile
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -39,8 +39,22 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ['id', 'resume']
+
+
 class UserProfileSerializer(serializers.ModelSerializer):
+    resume = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'role', 'bio', 'resume']
+        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'role', 'resume']
         read_only_fields = ['id', 'username', 'role']
+
+    def get_resume(self, obj):
+        profile = getattr(obj, 'profile', None)
+        if profile and profile.resume:
+            return profile.resume.url
+        return None

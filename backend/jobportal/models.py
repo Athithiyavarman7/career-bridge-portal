@@ -72,10 +72,10 @@ class Application(models.Model):
     def __str__(self):
         return f"{self.applicant.username} applied to {self.job.title}"
 
-    class Profile(models.Model):
 
-        username=models.OneToOneField(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
-        resume = models.FileField(upload_to="resumes/", blank=True, null=True)
-        def __str__(self):
+class Profile(models.Model):
+    username = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    resume = models.FileField(upload_to="resumes/", blank=True, null=True)
 
-            return f"{self.user.username}'s Profile"
+    def __str__(self):
+        return f"{self.username.username}'s Profile"

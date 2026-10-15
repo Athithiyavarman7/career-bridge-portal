@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-0o4ken#mv34a&s$joh1$^w_=akuiven6=l77d2mmzykq$jg7hh
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '*']
 
 
 # Application definition
@@ -38,9 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'django_filters',
+    'corsheaders',
     'jobportal',
-     "corsheaders",
-    
 ]
 
 MIDDLEWARE = [
@@ -122,18 +122,25 @@ USE_TZ = True
 STATIC_URL = 'static/'
 AUTH_USER_MODEL = 'jobportal.User'
 
+MEDIA_URL = '/resumes/'
+MEDIA_ROOT = BASE_DIR / 'resumes'
+
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
     "DEFAULT_FILTER_BACKENDS": [
+        "django_filters.rest_framework.DjangoFilterBackend",
         "rest_framework.filters.SearchFilter",
     ],
 }
-SIMPLE_JWT={
-    "ACCESS_TOKEN_LIFETIME":timedelta(minutes=30),
-    "REFRESH_TOKEN_LIFETIME":timedelta(days=1),
- }
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+}
 
 CORS_ALLOWED_ORIGINS = [
-     "http://localhost:5173",]
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
+CORS_ALLOW_CREDENTIALS = True
